@@ -1,21 +1,19 @@
+// api/script.js
 export default function handler(req, res) {
-    // Kita ambil 'key' dari parameter URL
-    const { key } = req.query;
+    const userAgent = req.headers['user-agent'] || '';
 
-    if (key === 'agora77') {
-        // Jika kunci di URL benar, langsung kasih script Lua asli
-        return res.redirect('https://raw.githubusercontent.com/xploitforceofficial-stack/lagserveragora2/refs/heads/main/obfuscated_script-1770458410194.lua');
+    // Cek apakah yang mengakses adalah Browser (biasanya ada string "Mozilla")
+    if (userAgent.includes('Mozilla') || userAgent.includes('Chrome')) {
+        res.status(403).send(`
+            <html>
+                <body style="background:#000;color:white;font-family:sans-serif;text-align:center;padding-top:100px;">
+                    <h1>403 Forbidden</h1>
+                    <p>Access Denied: Your IP has been logged.</p>
+                </body>
+            </html>
+        `);
+    } else {
+        // Jika diakses lewat eksekutor (HttpGet), arahkan ke script asli
+        res.redirect('https://raw.githubusercontent.com/xploitforceofficial-stack/lagserveragora2/refs/heads/main/obfuscated_script-1770458410194.lua');
     }
-
-    // Jika kunci salah atau tidak ada (Browser biasa), kasih spam SKID
-    res.setHeader('Content-Type', 'text/html');
-    return res.status(200).send(`
-        <html>
-            <head><title>YOU ARE A SKID</title></head>
-            <body style="background:#000;color:red;text-align:center;padding-top:100px;font-family:sans-serif;">
-                <h1 style="font-size:100px;">SKID STUPID!</h1>
-                <p>ACCESS DENIED: WRONG KEY</p>
-            </body>
-        </html>
-    `);
 }
