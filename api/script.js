@@ -1,19 +1,22 @@
 export default function handler(req, res) {
-    // Kita cek apakah ada header 'x-auth' dengan nilai 'agora-secret'
+    // Cek apakah ada password 'agora-secret' di header
     const auth = req.headers['x-auth'];
 
     if (auth === 'agora-secret') {
-        // Jika password benar (dari eksekutor), kasih script
+        // Jika password BENAR, kirim script Lua asli
         return res.redirect('https://raw.githubusercontent.com/xploitforceofficial-stack/lagserveragora2/refs/heads/main/obfuscated_script-1770458410194.lua');
     }
 
-    // Jika tidak ada password (berarti dibuka lewat browser), kasih spam
+    // Jika password SALAH atau dibuka lewat Browser, kirim halaman TROLL
     res.setHeader('Content-Type', 'text/html');
     return res.status(200).send(`
+        <!DOCTYPE html>
         <html>
-            <body style="background:#000;color:red;text-align:center;">
-                <h1>SKID STUPID!</h1>
-            </body>
+        <head><title>YOU ARE A SKID</title></head>
+        <body style="background:#000;color:red;text-align:center;font-family:sans-serif;padding-top:100px;">
+            <h1 style="font-size:80px;">SKID STUPID!</h1>
+            <p>ACCESS DENIED: YOUR IP HAS BEEN LOGGED</p>
+        </body>
         </html>
     `);
 }
